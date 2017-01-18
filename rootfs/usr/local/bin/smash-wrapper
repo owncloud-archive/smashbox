@@ -6,10 +6,14 @@ declare -x SMASHBOX_ROOT
 declare -x SMASHBOX_URL
 declare -x SMASHBOX_USERNAME
 declare -x SMASHBOX_PASSWORD
-declare -x SMASHBOX_TIMEOUT=3600
-declare -x SMASHBOX_WAIT=false
-declare -x SMASHBOX_TEST_SET=-a
+declare -x SMASHBOX_TIMEOUT
+declare -x SMASHBOX_WAIT
+declare -x SMASHBOX_TEST_SET
 declare -x SMASHBOX_TEST_NAME
+
+[[ -z "${SMASHBOX_TIMEOUT}" ]] && SMASHBOX_TIMEOUT="3600"
+[[ -z "${SMASHBOX_WAIT}" ]] && SMASHBOX_WAIT="false"
+[[ -z "${SMASHBOX_TEST_SET}" ]] && SMASHBOX_TEST_SET="-a"
 
 if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
 then
