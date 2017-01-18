@@ -1,21 +1,22 @@
 FROM owncloud/alpine:latest
 MAINTAINER ownCloud DevOps <devops@owncloud.com>
 
-ARG VERSION
-ARG BUILD_DATE
-ARG VCS_REF
-
-ENTRYPOINT ["/usr/local/bin/smash"]
+ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 
 RUN apk update && \
-  apk add owncloud-client@testing git py2-pip && \
+  apk add owncloud-client@testing git py2-pip coreutils && \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
   cd /smashbox && \
   pip install -r requirements.txt && \
   cd && \
   rm -rf /var/cache/apk/* /tmp/*
 
+WORKDIR /smashbox
 COPY rootfs /
+
+ARG VERSION
+ARG BUILD_DATE
+ARG VCS_REF
 
 LABEL org.label-schema.version=$VERSION
 LABEL org.label-schema.build-date=$BUILD_DATE

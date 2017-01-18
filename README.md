@@ -40,7 +40,15 @@ IMAGE_NAME=owncloud/smashbox ./hooks/build
 
 ## Available environment variables
 
-**None**
+```
+SMASHBOX_ACCOUNT_PASSWORD
+SMASHBOX_ROOT
+SMASHBOX_URL
+SMASHBOX_USERNAME
+SMASHBOX_PASSWORD
+SMASHBOX_TIMEOUT 3600
+SMASHBOX_WAIT false
+```
 
 
 ## Issues, Feedback and Ideas

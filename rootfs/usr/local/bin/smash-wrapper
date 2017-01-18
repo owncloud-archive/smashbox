@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -e
+
+declare -x SMASHBOX_ACCOUNT_PASSWORD
+declare -x SMASHBOX_ROOT
+declare -x SMASHBOX_URL
+declare -x SMASHBOX_USERNAME
+declare -x SMASHBOX_PASSWORD
+declare -x SMASHBOX_TIMEOUT=3600
+declare -x SMASHBOX_WAIT=false
+declare -x SMASHBOX_TEST_SET=-a
+declare -x SMASHBOX_TEST_NAME
+
+if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
+then
+  echo -n "Trying to access http://${SMASHBOX_URL} for ${SMASHBOX_TIMEOUT} seconds"
+  STARTED=$(date +%s)
+
+  while [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -lt $STARTED ]
+  do
+      if [[ $(curl --write-out %{http_code} --silent --output /dev/null http://${SMASHBOX_URL}) == "200" ]]
+      then
+          break
+      else
+          echo -n "."
+          sleep 1
+      fi
+  done
+
+  if [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -ge $STARTED ]
+  then
+      echo "failed!"
+      exit 1
+  fi
+
+  echo "done!"
+fi
+
+if [[ -n ${SMASHBOX_TEST_NAME} ]]
+then
+  if [[ ${SMASHBOX_TEST_NAME} == *"@"* ]]; then
+    SMASHBOX_TEST_SET="-t ${SMASHBOX_TEST_NAME##*@}"
+    SMASHBOX_TEST_NAME="$(cut -d '@' -f 1 <<< "${SMASHBOX_TEST_NAME}")"
+  fi
+
+  FILES=(
+    lib/test_${SMASHBOX_TEST_NAME}.py
+    lib/oc-tests/test_${SMASHBOX_TEST_NAME}.py
+    lib/owncloud/test_${SMASHBOX_TEST_NAME}.py
+  )
+
+  for FILE in ${FILES[@]}
+  do
+    if [[ -f /smashbox/${FILE} ]]
+    then
+      SMASHBOX_TEST_NAME=${FILE}
+    fi
+  done
+fi
+
+exec /smashbox/bin/smash --debug ${SMASHBOX_TEST_SET} ${SMASHBOX_TEST_NAME} $*
