@@ -2,21 +2,21 @@
 
 [![](https://images.microbadger.com/badges/image/owncloud/smashbox.svg)](https://microbadger.com/images/owncloud/smashbox "Get your own image badge on microbadger.com")
 
-This is our minimal image for [Smashbox](https://github.com/owncloud/smashbox) based on our [Ubuntu container](https://registry.hub.docker.com/u/owncloud/ubuntu/).
+This is our minimal image for [Smashbox](https://github.com/owncloud/smashbox) based on our [Alpine container](https://registry.hub.docker.com/u/owncloud/alpine/).
 
 
 ## Usage
 
 ```bash
 docker run -ti \
-  --name ubuntu \
+  --name smashbox \
   owncloud/smashbox:latest
 ```
 
 
 ## Build locally
 
-The available versions should be already pushed to the Docker Hub, but in case you want to try a change locally you can always execute the follwiing command to get this image built locally:
+The available versions should be already pushed to the Docker Hub, but in case you want to try a change locally you can always execute the following command to get this image built locally:
 
 ```
 IMAGE_NAME=owncloud/smashbox ./hooks/build
