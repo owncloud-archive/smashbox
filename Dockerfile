@@ -15,7 +15,7 @@ RUN apk update && \
   make all install && \
   cd && \
   rm -rf /tmp/client-${VERSION} && \
-  apk del build-base cmake qt5-qttools-dev qt5-qtwebkit-dev qt5-qtkeychain-dev && \
+  apk del build-base cmake && \
   apk add git py2-pip coreutils && \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
   cd /smashbox && \
