@@ -1,4 +1,4 @@
-FROM owncloud/client:latest
+FROM owncloud/client:build
 MAINTAINER ownCloud DevOps <devops@owncloud.com>
 
 ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
@@ -6,7 +6,6 @@ ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 ARG VERSION
 ARG BUILD_DATE
 ARG VCS_REF
-
 RUN apk update && \
   apk add git py2-pip coreutils && \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
