@@ -19,7 +19,7 @@ docker run -ti \
 The available versions should be already pushed to the Docker Hub, but in case you want to try a change locally you can always execute the following command to get this image built locally:
 
 ```
-IMAGE_NAME=owncloud/smashbox ./hooks/build
+IMAGE_NAME=owncloud/smashbox:build ./hooks/build
 ```
 
 
