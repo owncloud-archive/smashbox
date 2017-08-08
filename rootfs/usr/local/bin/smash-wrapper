@@ -1,25 +1,41 @@
 #!/usr/bin/env bash
-set -e
+set -eo pipefail
 
 declare -x SMASHBOX_ACCOUNT_PASSWORD
-declare -x SMASHBOX_ROOT
-declare -x SMASHBOX_URL
-declare -x SMASHBOX_USERNAME
-declare -x SMASHBOX_PASSWORD
-declare -x SMASHBOX_TIMEOUT
-declare -x SMASHBOX_WAIT
-declare -x SMASHBOX_TEST_SET
-declare -x SMASHBOX_TEST_NAME
-declare -x SMASHBOX_CHECK_URL
-declare -x SMASHBOX_CHECK_STATUS
-declare -x SMASHBOX_SSL_ENABLED
+[[ -z "${SMASHBOX_ACCOUNT_PASSWORD}" ]] && SMASHBOX_ACCOUNT_PASSWORD=""
 
+declare -x SMASHBOX_ROOT
+[[ -z "${SMASHBOX_ROOT}" ]] && SMASHBOX_ROOT=""
+
+declare -x SMASHBOX_URL
+[[ -z "${SMASHBOX_URL}" ]] && SMASHBOX_URL=""
+
+declare -x SMASHBOX_USERNAME
+[[ -z "${SMASHBOX_USERNAME}" ]] && SMASHBOX_USERNAME=""
+
+declare -x SMASHBOX_PASSWORD
+[[ -z "${SMASHBOX_PASSWORD}" ]] && SMASHBOX_PASSWORD=""
+
+declare -x SMASHBOX_TIMEOUT
 [[ -z "${SMASHBOX_TIMEOUT}" ]] && SMASHBOX_TIMEOUT="3600"
+
+declare -x SMASHBOX_WAIT
 [[ -z "${SMASHBOX_WAIT}" ]] && SMASHBOX_WAIT="false"
-[[ -z "${SMASHBOX_TEST_SET}" ]] && SMASHBOX_TEST_SET="-a"
+
+declare -x SMASHBOX_TEST_NAME
+[[ -z "${SMASHBOX_TEST_NAME}" ]] && SMASHBOX_TEST_NAME=""
+
+declare -x SMASHBOX_CHECK_URL
 [[ -z "${SMASHBOX_CHECK_URL}" ]] && SMASHBOX_CHECK_URL="${SMASHBOX_URL}"
+
+declare -x SMASHBOX_CHECK_STATUS
 [[ -z "${SMASHBOX_CHECK_STATUS}" ]] && SMASHBOX_CHECK_STATUS="200"
+
+declare -x SMASHBOX_SSL_ENABLED
 [[ -z "${SMASHBOX_SSL_ENABLED}" ]] && SMASHBOX_SSL_ENABLED="false"
+
+declare -x SMASHBOX_TEST_FOLDER
+[[ -z "${SMASHBOX_TEST_FOLDER}" ]] && SMASHBOX_TEST_FOLDER="/smashbox/run"
 
 if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
 then
@@ -46,26 +62,33 @@ then
   echo "done!"
 fi
 
-if [[ -n ${SMASHBOX_TEST_NAME} ]]
-then
-  if [[ ${SMASHBOX_TEST_NAME} == *"@"* ]]; then
-    SMASHBOX_TEST_SET="-t ${SMASHBOX_TEST_NAME##*@}"
-    SMASHBOX_TEST_NAME="$(cut -d '@' -f 1 <<< "${SMASHBOX_TEST_NAME}")"
-  fi
+mkdir -p \
+  ${SMASHBOX_TEST_FOLDER}
 
-  FILES=(
-    lib/test_${SMASHBOX_TEST_NAME}.py
-    lib/oc-tests/test_${SMASHBOX_TEST_NAME}.py
-    lib/owncloud/test_${SMASHBOX_TEST_NAME}.py
-  )
-
-  for FILE in ${FILES[@]}
-  do
-    if [[ -f /smashbox/${FILE} ]]
-    then
-      SMASHBOX_TEST_NAME=${FILE}
+for TEST_NAME in ${SMASHBOX_TEST_NAME}
+do
+  if [[ -n ${TEST_NAME} ]]
+  then
+    if [[ ${TEST_NAME} == *"@"* ]]; then
+      TEST_NAME="$(cut -d '@' -f 1 <<< "${TEST_NAME}")"
     fi
-  done
-fi
 
-exec /smashbox/bin/smash --debug ${SMASHBOX_TEST_SET} ${SMASHBOX_TEST_NAME} $*
+    FILES=(
+      lib/test_${TEST_NAME}.py
+      lib/oc-tests/test_${TEST_NAME}.py
+      lib/owncloud/test_${TEST_NAME}.py
+    )
+
+    for FILE in ${FILES[@]}
+    do
+      if [[ -f /smashbox/${FILE} ]]
+      then
+        TEST_NAME=${FILE}
+      fi
+    done
+
+    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}/
+  fi
+done
+
+exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
