@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+declare -x SMASHBOX_ACCOUNT_PASSWORD
+[[ -z "${SMASHBOX_ACCOUNT_PASSWORD}" ]] && SMASHBOX_ACCOUNT_PASSWORD=""
+
+declare -x SMASHBOX_ROOT
+[[ -z "${SMASHBOX_ROOT}" ]] && SMASHBOX_ROOT=""
+
+declare -x SMASHBOX_URL
+[[ -z "${SMASHBOX_URL}" ]] && SMASHBOX_URL=""
+
+declare -x SMASHBOX_USERNAME
+[[ -z "${SMASHBOX_USERNAME}" ]] && SMASHBOX_USERNAME=""
+
+declare -x SMASHBOX_PASSWORD
+[[ -z "${SMASHBOX_PASSWORD}" ]] && SMASHBOX_PASSWORD=""
+
+declare -x SMASHBOX_TIMEOUT
+[[ -z "${SMASHBOX_TIMEOUT}" ]] && SMASHBOX_TIMEOUT="3600"
+
+declare -x SMASHBOX_WAIT
+[[ -z "${SMASHBOX_WAIT}" ]] && SMASHBOX_WAIT="false"
+
+declare -x SMASHBOX_TEST_NAME
+[[ -z "${SMASHBOX_TEST_NAME}" ]] && SMASHBOX_TEST_NAME="reshareDir scrapeLogFile shareDir shareFile shareGroup sharePermissions uploadFiles basicSync concurrentDirRemove shareLink shareMountInit sharePropagationGroups sharePropagationInsideGroups chunking nplusone"
+
+declare -x SMASHBOX_CHECK_URL
+[[ -z "${SMASHBOX_CHECK_URL}" ]] && SMASHBOX_CHECK_URL="${SMASHBOX_URL}"
+
+declare -x SMASHBOX_CHECK_STATUS
+[[ -z "${SMASHBOX_CHECK_STATUS}" ]] && SMASHBOX_CHECK_STATUS="200"
+
+declare -x SMASHBOX_SSL_ENABLED
+[[ -z "${SMASHBOX_SSL_ENABLED}" ]] && SMASHBOX_SSL_ENABLED="false"
+
+declare -x SMASHBOX_TEST_FOLDER
+[[ -z "${SMASHBOX_TEST_FOLDER}" ]] && SMASHBOX_TEST_FOLDER="/smashbox/run"
+
+declare -x SMASHBOX_CLIENT_REPO
+[[ -z "${SMASHBOX_CLIENT_REPO}" ]] && SMASHBOX_CLIENT_REPO="https://github.com/owncloud/client.git"
+
+declare -x SMASHBOX_CLIENT_BRANCH
+[[ -z "${SMASHBOX_CLIENT_BRANCH}" ]] && SMASHBOX_CLIENT_BRANCH="master"
+
+if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
+then
+  echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds"
+  STARTED=$(date +%s)
+
+  while [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -lt $STARTED ]
+  do
+      if [[ $(curl --write-out %{http_code} --silent --output /dev/null http://${SMASHBOX_CHECK_URL}) == "${SMASHBOX_CHECK_STATUS}" ]]
+      then
+          break
+      else
+          echo -n "."
+          sleep 1
+      fi
+  done
+
+  if [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -ge $STARTED ]
+  then
+      echo "failed!"
+      exit 1
+  fi
+
+  echo "done!"
+fi
+
+mkdir -p \
+  ${SMASHBOX_TEST_FOLDER}
+
+for TEST_NAME in ${SMASHBOX_TEST_NAME}
+do
+  if [[ -n ${TEST_NAME} ]]
+  then
+    if [[ ${TEST_NAME} == *"@"* ]]; then
+      TEST_NAME="$(cut -d '@' -f 1 <<< "${TEST_NAME}")"
+    fi
+
+    FILES=(
+      lib/test_${TEST_NAME}.py
+      lib/oc-tests/test_${TEST_NAME}.py
+      lib/owncloud/test_${TEST_NAME}.py
+    )
+
+    for FILE in ${FILES[@]}
+    do
+      if [[ -f /smashbox/${FILE} ]]
+      then
+        TEST_NAME=${FILE}
+      fi
+    done
+
+    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}/
+  fi
+done
+
+git clone -b ${SMASHBOX_CLIENT_BRANCH} ${SMASHBOX_CLIENT_REPO} /tmp/client
+
+pushd /tmp/client
+  cmake \
+    -DCMAKE_BUILD_TYPE="Debug" \
+    -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_INSTALL_SYSCONFDIR=/etc/owncloud-client
+
+  make all install
+popd
+
+exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
