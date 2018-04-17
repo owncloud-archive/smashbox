@@ -38,6 +38,7 @@ SMASHBOX_SSL_ENABLED false
 SMASHBOX_TEST_FOLDER /smashbox/run
 SMASHBOX_CLIENT_REPO https://github.com/owncloud/client.git
 SMASHBOX_CLIENT_BRANCH master
+SMASHBOX_CLIENT_FOLDER /tmp/client
 ```
 
 
