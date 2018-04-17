@@ -43,6 +43,9 @@ declare -x SMASHBOX_CLIENT_REPO
 declare -x SMASHBOX_CLIENT_BRANCH
 [[ -z "${SMASHBOX_CLIENT_BRANCH}" ]] && SMASHBOX_CLIENT_BRANCH="master"
 
+declare -x SMASHBOX_CLIENT_FOLDER
+[[ -z "${SMASHBOX_CLIENT_FOLDER}" ]] && SMASHBOX_CLIENT_FOLDER="/tmp/client"
+
 if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
 then
   echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds"
@@ -89,17 +92,17 @@ do
     do
       if [[ -f /smashbox/${FILE} ]]
       then
-        TEST_NAME=${FILE}
+        TEST_NAME=/smashbox/${FILE}
       fi
     done
 
-    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}/
+    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}
   fi
 done
 
-git clone -b ${SMASHBOX_CLIENT_BRANCH} ${SMASHBOX_CLIENT_REPO} /tmp/client
+git clone -b ${SMASHBOX_CLIENT_BRANCH} ${SMASHBOX_CLIENT_REPO} ${SMASHBOX_CLIENT_FOLDER}
 
-pushd /tmp/client
+pushd ${SMASHBOX_CLIENT_FOLDER}
   cmake \
     -DCMAKE_BUILD_TYPE="Debug" \
     -DCMAKE_INSTALL_LIBDIR=lib \
