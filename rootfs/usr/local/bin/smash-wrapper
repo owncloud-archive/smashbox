@@ -102,11 +102,6 @@ done
 
 if [[ ! -d ${SMASHBOX_CLIENT_FOLDER} ]]; then
   git clone -b ${SMASHBOX_CLIENT_BRANCH} ${SMASHBOX_CLIENT_REPO} ${SMASHBOX_CLIENT_FOLDER}
-else
-  pushd ${SMASHBOX_CLIENT_FOLDER}
-    git fetch --all --prune
-    git rebase ${SMASHBOX_CLIENT_BRANCH}
-  popd
 fi
 
 pushd ${SMASHBOX_CLIENT_FOLDER}
