@@ -3,7 +3,7 @@
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud-docker/smashbox/status.svg)](https://drone.owncloud.com/owncloud-docker/smashbox)
 [![](https://images.microbadger.com/badges/image/owncloud/smashbox.svg)](https://microbadger.com/images/owncloud/smashbox "Get your own image badge on microbadger.com")
 
-This is our minimal image for [Smashbox](https://github.com/owncloud/smashbox) based on our [client container](https://registry.hub.docker.com/u/owncloud/client/).
+This is our image for [Smashbox](https://github.com/owncloud/smashbox) based on our [Client container](https://registry.hub.docker.com/u/owncloud/client/).
 
 
 ## Versions
@@ -39,12 +39,18 @@ SMASHBOX_TEST_FOLDER /smashbox/run
 ```
 
 
+## Inherited environment variables
+
+* [owncloud/client](https://github.com/owncloud-docker/client#available-environment-variables)
+* [owncloud/ubuntu](https://github.com/owncloud-docker/ubuntu#available-environment-variables)
+
+
 ## Build locally
 
 The available versions should be already pushed to the Docker Hub, but in case you want to try a change locally you can always execute the following command to get this image built locally:
 
 ```
-IMAGE_NAME=owncloud/smashbox ./hooks/build
+docker build -t owncloud/smashbox:latest .
 ```
 
 
@@ -61,6 +67,7 @@ Fork -> Patch -> Push -> Pull Request
 ## Authors
 
 * [Thomas Boerger](https://github.com/tboerger)
+* [Thomas Mueller](https://github.com/DeepDiver1975)
 
 
 ## License
@@ -71,5 +78,5 @@ MIT
 ## Copyright
 
 ```
-Copyright (c) 2017 Thomas Boerger <tboerger@owncloud.com>
+Copyright (c) 2018 Thomas Boerger <tboerger@owncloud.com>
 ```

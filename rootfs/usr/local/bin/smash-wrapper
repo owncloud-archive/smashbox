@@ -39,7 +39,7 @@ declare -x SMASHBOX_TEST_FOLDER
 
 if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
 then
-  echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds"
+  echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds..."
   STARTED=$(date +%s)
 
   while [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -lt $STARTED ]
