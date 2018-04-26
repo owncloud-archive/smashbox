@@ -17,7 +17,8 @@ pipeline:
     pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloud/smashbox
-    tags: [ latest ]
+    tags:
+      - latest
     dry_run: true
     when:
       event: [ pull_request ]
@@ -27,7 +28,8 @@ pipeline:
     pull: true
     secrets: [ docker_username, docker_password ]
     repo: owncloud/smashbox
-    tags: [ latest ]
+    tags:
+      - latest
     when:
       event: [ push ]
 
