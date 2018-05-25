@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+declare -x SMASHBOX_ACCOUNT_NAME
+[[ -z "${SMASHBOX_ACCOUNT_NAME}" ]] && SMASHBOX_ACCOUNT_NAME=""
+
+declare -x SMASHBOX_GROUP_NAME
+[[ -z "${SMASHBOX_GROUP_NAME}" ]] && SMASHBOX_GROUP_NAME=""
+
 declare -x SMASHBOX_ACCOUNT_PASSWORD
 [[ -z "${SMASHBOX_ACCOUNT_PASSWORD}" ]] && SMASHBOX_ACCOUNT_PASSWORD=""
 
