@@ -8,7 +8,7 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
 ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 
 RUN apk update && \
-  apk add git py2-pip coreutils && \
+  apk add git py2-pip coreutils libxml2-utils && \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
   cd /smashbox && \
   pip install -r requirements.txt && \
