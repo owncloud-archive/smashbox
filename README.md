@@ -32,6 +32,7 @@ SMASHBOX_PASSWORD
 SMASHBOX_TIMEOUT 3600
 SMASHBOX_WAIT false
 SMASHBOX_TEST_NAME
+SMASHBOX_TEST_OPTIONS
 SMASHBOX_CHECK_URL $SMASHBOX_URL
 SMASHBOX_CHECK_STATUS 200
 SMASHBOX_SSL_ENABLED false
@@ -51,9 +52,7 @@ SMASHBOX_GROUP_NAME
 The available versions should be already pushed to the Docker Hub, but in case you want to try a change locally you can always execute the following command to get this image built locally:
 
 ```
-docker build \
---build-arg BUILD_BRANCH=master \
--t owncloud/smashbox:latest .
+docker build -t owncloud/smashbox:latest .
 ```
 
 

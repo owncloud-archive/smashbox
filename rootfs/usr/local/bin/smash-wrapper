@@ -31,6 +31,9 @@ declare -x SMASHBOX_WAIT
 declare -x SMASHBOX_TEST_NAME
 [[ -z "${SMASHBOX_TEST_NAME}" ]] && SMASHBOX_TEST_NAME=""
 
+declare -x SMASHBOX_TEST_OPTIONS
+[[ -z "${SMASHBOX_TEST_OPTIONS}" ]] && SMASHBOX_TEST_OPTIONS="-a"
+
 declare -x SMASHBOX_CHECK_URL
 [[ -z "${SMASHBOX_CHECK_URL}" ]] && SMASHBOX_CHECK_URL="${SMASHBOX_URL}"
 
@@ -67,10 +70,6 @@ fi
 
 if [[ -n ${SMASHBOX_TEST_NAME} ]]
 then
-  if [[ ${SMASHBOX_TEST_NAME} == *"@"* ]]; then
-    SMASHBOX_TEST_NAME="$(cut -d '@' -f 1 <<< "${SMASHBOX_TEST_NAME}")"
-  fi
-
   FILES=(
     lib/test_${SMASHBOX_TEST_NAME}.py
     lib/oc-tests/test_${SMASHBOX_TEST_NAME}.py
@@ -87,4 +86,4 @@ then
   done
 fi
 
-exec /smashbox/bin/smash --debug ${SMASHBOX_TEST_NAME} -a $*
+exec /smashbox/bin/smash --debug ${SMASHBOX_TEST_NAME} ${SMASHBOX_TEST_OPTIONS}
