@@ -9,11 +9,14 @@ ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 
 RUN apk update && \
   apk add git py2-pip coreutils libxml2-utils && \
-  git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
+  rm -rf /var/cache/apk/*
+
+ARG BUILD_BRANCH=master
+
+RUN git clone --depth 1 https://github.com/owncloud/smashbox.git -b ${BUILD_BRANCH} /smashbox && \
   cd /smashbox && \
   pip install -r requirements.txt && \
-  cd && \
-  rm -rf /var/cache/apk/* /tmp/*
+  rm -rf /tmp/*
 
 WORKDIR /smashbox
 COPY rootfs /

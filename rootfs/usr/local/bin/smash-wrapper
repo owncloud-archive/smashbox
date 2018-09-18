@@ -40,9 +40,6 @@ declare -x SMASHBOX_CHECK_STATUS
 declare -x SMASHBOX_SSL_ENABLED
 [[ -z "${SMASHBOX_SSL_ENABLED}" ]] && SMASHBOX_SSL_ENABLED="false"
 
-declare -x SMASHBOX_TEST_FOLDER
-[[ -z "${SMASHBOX_TEST_FOLDER}" ]] && SMASHBOX_TEST_FOLDER="/smashbox/run"
-
 if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
 then
   echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds..."
@@ -68,33 +65,26 @@ then
   echo "done!"
 fi
 
-mkdir -p \
-  ${SMASHBOX_TEST_FOLDER}
-
-for TEST_NAME in ${SMASHBOX_TEST_NAME}
-do
-  if [[ -n ${TEST_NAME} ]]
-  then
-    if [[ ${TEST_NAME} == *"@"* ]]; then
-      TEST_NAME="$(cut -d '@' -f 1 <<< "${TEST_NAME}")"
-    fi
-
-    FILES=(
-      lib/test_${TEST_NAME}.py
-      lib/oc-tests/test_${TEST_NAME}.py
-      lib/owncloud/test_${TEST_NAME}.py
-    )
-
-    for FILE in ${FILES[@]}
-    do
-      if [[ -f /smashbox/${FILE} ]]
-      then
-        TEST_NAME=${FILE}
-      fi
-    done
-
-    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}/
+if [[ -n ${SMASHBOX_TEST_NAME} ]]
+then
+  if [[ ${SMASHBOX_TEST_NAME} == *"@"* ]]; then
+    SMASHBOX_TEST_NAME="$(cut -d '@' -f 1 <<< "${SMASHBOX_TEST_NAME}")"
   fi
-done
 
-exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
+  FILES=(
+    lib/test_${SMASHBOX_TEST_NAME}.py
+    lib/oc-tests/test_${SMASHBOX_TEST_NAME}.py
+    lib/owncloud/test_${SMASHBOX_TEST_NAME}.py
+    lib/examples/test_${SMASHBOX_TEST_NAME}.py
+  )
+
+  for FILE in ${FILES[@]}
+  do
+    if [[ -f /smashbox/${FILE} ]]
+    then
+      SMASHBOX_TEST_NAME=${FILE}
+    fi
+  done
+fi
+
+exec /smashbox/bin/smash --debug ${SMASHBOX_TEST_NAME} -a $*
