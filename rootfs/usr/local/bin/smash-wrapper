@@ -111,6 +111,8 @@ if [[ ! -d ${SMASHBOX_CLIENT_FOLDER} ]]; then
 fi
 
 pushd ${SMASHBOX_CLIENT_FOLDER}
+  git submodule update --init
+
   cmake \
     -DCMAKE_BUILD_TYPE="Debug" \
     -DCMAKE_INSTALL_LIBDIR=lib \
