@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+declare -x SMASHBOX_CLIENT_BRANCH
+[[ -z "${SMASHBOX_CLIENT_BRANCH}" ]] && SMASHBOX_CLIENT_BRANCH="2.7"
+
 declare -x SMASHBOX_ACCOUNT_NAME
 [[ -z "${SMASHBOX_ACCOUNT_NAME}" ]] && SMASHBOX_ACCOUNT_NAME=""
 
@@ -97,4 +100,8 @@ do
   fi
 done
 
+wget -nv https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/Release.key -O - | sudo apt-key add -
+echo 'deb https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/ /' | sudo tee -a /etc/apt/sources.list.d/owncloud.list
+sudo apt update
+sudo apt install -y owncloud-client
 exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
