@@ -103,9 +103,9 @@ done
 source /etc/os-release
 
 if [[ "${SMASHBOX_CLIENT_BRANCH}" == "2.6" ]]; then
-  OWNCLOUD_REPO_URL = "https://download.owncloud.com/desktop/daily/ownCloud/${NAME}_${VERSION_ID}"
+  OWNCLOUD_REPO_URL="https://download.owncloud.com/desktop/daily/ownCloud/${NAME}_${VERSION_ID}"
 else
-  OWNCLOUD_REPO_URL = "https://download.owncloud.com/desktop/ownCloud/daily/${env:SMASHBOX_CLIENT_BRANCH}/linux/${NAME}_${VERSION_ID}/"
+  OWNCLOUD_REPO_URL="https://download.owncloud.com/desktop/ownCloud/daily/${env:SMASHBOX_CLIENT_BRANCH}/linux/${NAME}_${VERSION_ID}/"
 fi
 
 curl ${OWNCLOUD_REPO_URL}/Release.key | apt-key add -
