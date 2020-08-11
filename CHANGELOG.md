@@ -3,7 +3,7 @@
 ## 2020-08-11
 
 * Changed
-  * Trigger a rebuild
+  * Don't ship a client...
 
 ## 2019-07-29
 

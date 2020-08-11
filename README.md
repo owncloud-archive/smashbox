@@ -3,8 +3,7 @@
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud-docker/smashbox/status.svg)](https://drone.owncloud.com/owncloud-docker/smashbox)
 [![](https://images.microbadger.com/badges/image/owncloud/smashbox.svg)](https://microbadger.com/images/owncloud/smashbox "Get your own image badge on microbadger.com")
 
-This is our image for [Smashbox](https://github.com/owncloud/smashbox) based on our [Client container](https://registry.hub.docker.com/u/owncloud/client/).
-
+This is our image for [Smashbox](https://github.com/owncloud/smashbox)
 
 ## Versions
 
