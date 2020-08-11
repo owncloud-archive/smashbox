@@ -1,4 +1,6 @@
-FROM owncloud/client:latest
+# ubuntu 18.04 with powershell
+FROM mcr.microsoft.com/powershell:latest
+
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
   org.label-schema.name="ownCloud Smashbox" \
@@ -7,15 +9,13 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
 
 ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 
-RUN apk update && \
-  apk add git python2 coreutils libxml2-utils && \
-  curl -O https://bootstrap.pypa.io/3.4/get-pip.py && \
-  python2 get-pip.py && \
+RUN apt update && \
+  apt install -y git python-pip&& \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
   cd /smashbox && \
   pip install -r requirements.txt && \
   cd && \
-  rm -rf /var/cache/apk/* /tmp/*
+  rm -rf /var/lib/apt/lists/* /tmp/*
 
 WORKDIR /smashbox
 COPY rootfs /
