@@ -80,20 +80,20 @@ do
     fi
 
     FILES=(
-      lib/test_${TEST_NAME}.py
-      lib/oc-tests/test_${TEST_NAME}.py
-      lib/owncloud/test_${TEST_NAME}.py
+      "lib/test_${TEST_NAME}.py"
+      "lib/oc-tests/test_${TEST_NAME}.py"
+      "lib/owncloud/test_${TEST_NAME}.py"
     )
 
-    for FILE in ${FILES[@]}
+    for FILE in "${FILES[@]}"
     do
-      if [[ -f /smashbox/${FILE} ]]
+      if [[ -f "/smashbox/${FILE}" ]]
       then
-        TEST_NAME=${FILE}
+        TEST_NAME="${FILE}"
       fi
     done
 
-    cp ${TEST_NAME} ${SMASHBOX_TEST_FOLDER}/
+    cp "/smashbox/${TEST_NAME}" "${SMASHBOX_TEST_FOLDER}/"
   fi
 done
 
