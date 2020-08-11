@@ -1,5 +1,4 @@
-# ubuntu 18.04 with powershell
-FROM mcr.microsoft.com/powershell:latest
+FROM owncloud/ubuntu:18.04
 
 
 LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
@@ -10,7 +9,7 @@ LABEL maintainer="ownCloud DevOps <devops@owncloud.com>" \
 ENTRYPOINT ["/usr/local/bin/smash-wrapper"]
 
 RUN apt update && \
-  apt install -y git python-pip&& \
+  apt install -y git python-pip && \
   git clone --depth 1 https://github.com/owncloud/smashbox.git /smashbox && \
   cd /smashbox && \
   pip install -r requirements.txt && \
