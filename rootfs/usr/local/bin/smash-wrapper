@@ -100,8 +100,9 @@ do
   fi
 done
 
-wget -nv https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/Release.key -O - | sudo apt-key add -
-echo 'deb https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/ /' | sudo tee -a /etc/apt/sources.list.d/owncloud.list
-sudo apt update
-sudo apt install -y owncloud-client
+curl https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/Release.key |apt-key add -
+echo 'deb https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/Ubuntu_18.04/ /' | tee -a /etc/apt/sources.list.d/owncloud.list
+apt update
+apt install -y owncloud-client
+
 exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
