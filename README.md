@@ -1,4 +1,4 @@
-# ownCloud: PHP
+# ownCloud: Smashbox
 
 [![Build Status](https://img.shields.io/drone/build/owncloud-docker/smashbox?logo=drone&server=https%3A%2F%2Fdrone.owncloud.com)](https://drone.owncloud.com/owncloud-docker/smashbox)
 [![Docker Hub](https://img.shields.io/docker/v/owncloud/smashbox?logo=docker&label=dockerhub&sort=semver&logoColor=white)](https://hub.docker.com/r/owncloud/smashbox)
