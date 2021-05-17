@@ -253,7 +253,6 @@ def prepublish(config):
   return [{
     'name': 'prepublish',
     'image': 'plugins/docker',
-    'privileged': True,
     'pull': 'always',
     'settings': {
       'username': {
@@ -293,7 +292,6 @@ def publish(config):
   return [{
     'name': 'publish',
     'image': 'plugins/docker',
-    'privileged': True,
     'pull': 'always',
     'settings': {
       'username': {
