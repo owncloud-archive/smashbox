@@ -250,7 +250,7 @@ def rocketchat(config):
     },
   }
 
-def prepublish(ctx, config):
+def prepublish(config):
   return [{
     'name': 'prepublish',
     'image': 'plugins/docker',
