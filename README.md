@@ -1,28 +1,39 @@
-# ownCloud: Smashbox
+# ownCloud: PHP
 
-[![Build Status](https://drone.owncloud.com/api/badges/owncloud-docker/smashbox/status.svg)](https://drone.owncloud.com/owncloud-docker/smashbox)
-[![](https://images.microbadger.com/badges/image/owncloud/smashbox.svg)](https://microbadger.com/images/owncloud/smashbox "Get your own image badge on microbadger.com")
+[![Build Status](https://img.shields.io/drone/build/owncloud-docker/smashbox?logo=drone&server=https%3A%2F%2Fdrone.owncloud.com)](https://drone.owncloud.com/owncloud-docker/smashbox)
+[![Docker Hub](https://img.shields.io/docker/v/owncloud/smashbox?logo=docker&label=dockerhub&sort=semver&logoColor=white)](https://hub.docker.com/r/owncloud/smashbox)
+[![GitHub contributors](https://img.shields.io/github/contributors/owncloud-docker/smashbox)](https://github.com/owncloud-docker/smashbox/graphs/contributors)
+[![Source: GitHub](https://img.shields.io/badge/source-github-blue.svg?logo=github&logoColor=white)](https://github.com/owncloud-docker/smashbox)
+[![License: MIT](https://img.shields.io/github/license/owncloud-docker/smashbox)](https://github.com/owncloud-docker/smashbox/blob/master/LICENSE)
 
-This is our image for [Smashbox](https://github.com/owncloud/smashbox)
+ownCloud Docker image for [Smashbox](https://github.com/owncloud/smashbox).
 
-## Versions
+## Quick reference
 
-To get an overview about the available versions please take a look at the [GitHub branches](https://github.com/owncloud-docker/smashbox/branches/all) or our [Docker Hub tags](https://hub.docker.com/r/owncloud/smashbox/tags/), these lists are always up to date.
+- **Where to file issues:**\
+  [owncloud-docker/smashbox](https://github.com/owncloud-docker/smashbox/issues)
 
+- **Supported architectures:**\
+  `amd64`
 
-## Volumes
+- **Inherited environments:**\
+  [owncloud/ubuntu](https://github.com/owncloud-docker/ubuntu#environment-variables)
 
-* None
+## Docker Tags and respective Dockerfile links
 
+- [`latest`](https://github.com/owncloud-docker/smashbox/blob/master/latest/Dockerfile.amd64) available as `owncloud/smashbox:latest`
 
-## Ports
+## Default volumes
 
-* None
+None
 
+## Exposed ports
 
-## Available environment variables
+None
 
-```
+## Environment variables
+
+```Shell
 SMASHBOX_ACCOUNT_PASSWORD
 SMASHBOX_ROOT
 SMASHBOX_URL
@@ -40,36 +51,12 @@ SMASHBOX_GROUP_NAME
 SMASHBOX_CLIENT_BRANCH
 ```
 
-
-## Inherited environment variables
-
-* [owncloud/client](https://github.com/owncloud-docker/client#available-environment-variables)
-* [owncloud/alpine](https://github.com/owncloud-docker/alpine#available-environment-variables)
-
-
-## Issues, Feedback and Ideas
-
-Open an [Issue](https://github.com/owncloud-docker/smashbox/issues)
-
-
-## Contributing
-
-Fork -> Patch -> Push -> Pull Request
-
-
-## Authors
-
-* [Thomas Boerger](https://github.com/tboerger)
-* [Thomas Mueller](https://github.com/DeepDiver1975)
-
-
 ## License
 
-MIT
-
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/owncloud-docker/smashbox/blob/master/LICENSE) file for details.
 
 ## Copyright
 
-```
-Copyright (c) 2018 Thomas Boerger <tboerger@owncloud.com>
+```Text
+Copyright (c) 2021 ownCloud GmbH
 ```
