@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+eval "$(pyenv init --path)"
+
 declare -x SMASHBOX_CLIENT_BRANCH
 [[ -z "${SMASHBOX_CLIENT_BRANCH}" ]] && SMASHBOX_CLIENT_BRANCH="2.7"
 
