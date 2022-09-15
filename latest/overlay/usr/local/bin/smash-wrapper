@@ -48,26 +48,22 @@ declare -x SMASHBOX_SSL_ENABLED
 declare -x SMASHBOX_TEST_FOLDER
 [[ -z "${SMASHBOX_TEST_FOLDER}" ]] && SMASHBOX_TEST_FOLDER="/smashbox/run"
 
-if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]
-then
+if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]; then
   echo -n "Trying to access http://${SMASHBOX_CHECK_URL} for ${SMASHBOX_TIMEOUT} seconds..."
   STARTED=$(date +%s)
 
-  while [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -lt $STARTED ]
-  do
-      if [[ $(curl --write-out %{http_code} --silent --output /dev/null http://${SMASHBOX_CHECK_URL}) == "${SMASHBOX_CHECK_STATUS}" ]]
-      then
-          break
-      else
-          echo -n "."
-          sleep 1
-      fi
+  while [ $(($(date +%s) - "${SMASHBOX_TIMEOUT}")) -lt "$STARTED" ]; do
+    if [[ $(curl --write-out "%{http_code}" --silent --output /dev/null "http://${SMASHBOX_CHECK_URL}") == "${SMASHBOX_CHECK_STATUS}" ]]; then
+      break
+    else
+      echo -n "."
+      sleep 1
+    fi
   done
 
-  if [ $(( $(date +%s) - ${SMASHBOX_TIMEOUT} )) -ge $STARTED ]
-  then
-      echo "failed!"
-      exit 1
+  if [ $(($(date +%s) - "${SMASHBOX_TIMEOUT}")) -ge "$STARTED" ]; then
+    echo "failed!"
+    exit 1
   fi
 
   echo "done!"
@@ -76,12 +72,10 @@ fi
 mkdir -p \
   ${SMASHBOX_TEST_FOLDER}
 
-for TEST_NAME in ${SMASHBOX_TEST_NAME}
-do
-  if [[ -n ${TEST_NAME} ]]
-  then
+for TEST_NAME in ${SMASHBOX_TEST_NAME}; do
+  if [[ -n ${TEST_NAME} ]]; then
     if [[ ${TEST_NAME} == *"@"* ]]; then
-      TEST_NAME="$(cut -d '@' -f 1 <<< "${TEST_NAME}")"
+      TEST_NAME="$(cut -d '@' -f 1 <<<"${TEST_NAME}")"
     fi
 
     FILES=(
@@ -90,10 +84,8 @@ do
       "lib/owncloud/test_${TEST_NAME}.py"
     )
 
-    for FILE in "${FILES[@]}"
-    do
-      if [[ -f "/smashbox/${FILE}" ]]
-      then
+    for FILE in "${FILES[@]}"; do
+      if [[ -f "/smashbox/${FILE}" ]]; then
         TEST_NAME="${FILE}"
       fi
     done
@@ -102,13 +94,14 @@ do
   fi
 done
 
+# shellcheck disable=SC1091
 source /etc/os-release
 
 OWNCLOUD_REPO_URL="https://download.owncloud.com/desktop/ownCloud/daily/${SMASHBOX_CLIENT_BRANCH}/linux/${NAME}_${VERSION_ID}"
 echo "OWNCLOUD_REPO_URL=${OWNCLOUD_REPO_URL}"
-curl ${OWNCLOUD_REPO_URL}/Release.key | apt-key add -
+curl "${OWNCLOUD_REPO_URL}/Release.key" | apt-key add -
 echo "deb ${OWNCLOUD_REPO_URL} /" | tee -a /etc/apt/sources.list.d/owncloud.list
 apt update
 apt install -y owncloud-client
 
-exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} $*
+exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} "$@"
