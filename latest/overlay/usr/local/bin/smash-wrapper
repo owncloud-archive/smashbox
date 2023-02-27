@@ -70,7 +70,7 @@ if [[ ${SMASHBOX_WAIT} == "true" || ${SMASHBOX_WAIT} == "1" ]]; then
 fi
 
 mkdir -p \
-  ${SMASHBOX_TEST_FOLDER}
+  "${SMASHBOX_TEST_FOLDER}"
 
 for TEST_NAME in ${SMASHBOX_TEST_NAME}; do
   if [[ -n ${TEST_NAME} ]]; then
@@ -104,4 +104,4 @@ echo "deb ${OWNCLOUD_REPO_URL} /" | tee -a /etc/apt/sources.list.d/owncloud.list
 apt update
 apt install -y owncloud-client
 
-exec /smashbox/bin/smash --debug -a ${SMASHBOX_TEST_FOLDER} "$@"
+exec /smashbox/bin/smash --debug -a "${SMASHBOX_TEST_FOLDER}" "$@"
