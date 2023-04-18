@@ -102,7 +102,7 @@ def manifest(config):
         "steps": [
             {
                 "name": "manifest",
-                "image": "plugins/manifest",
+                "image": "docker.io/plugins/manifest",
                 "settings": {
                     "username": {
                         "from_secret": "public_username",
@@ -136,14 +136,14 @@ def documentation(config):
         "steps": [
             {
                 "name": "link-check",
-                "image": "ghcr.io/tcort/markdown-link-check:stable",
+                "image": "ghcr.io/tcort/markdown-link-check:3.11.0",
                 "commands": [
                     "/src/markdown-link-check README.md",
                 ],
             },
             {
                 "name": "publish",
-                "image": "chko/docker-pushrm:1",
+                "image": "docker.io/chko/docker-pushrm:1",
                 "environment": {
                     "DOCKER_PASS": {
                         "from_secret": "public_password",
@@ -187,7 +187,7 @@ def rocketchat(config):
         "steps": [
             {
                 "name": "notify",
-                "image": "plugins/slack",
+                "image": "docker.io/plugins/slack",
                 "failure": "ignore",
                 "settings": {
                     "webhook": {
@@ -213,7 +213,7 @@ def rocketchat(config):
 def prepublish(config):
     return [{
         "name": "prepublish",
-        "image": "plugins/docker",
+        "image": "docker.io/plugins/docker",
         "settings": {
             "username": {
                 "from_secret": "internal_username",
@@ -233,7 +233,7 @@ def prepublish(config):
 def sleep(config):
     return [{
         "name": "sleep",
-        "image": "owncloudci/alpine",
+        "image": "docker.io/owncloudci/alpine",
         "environment": {
             "DOCKER_USER": {
                 "from_secret": "internal_username",
@@ -251,7 +251,7 @@ def sleep(config):
 def publish(config):
     return [{
         "name": "publish",
-        "image": "plugins/docker",
+        "image": "docker.io/plugins/docker",
         "settings": {
             "username": {
                 "from_secret": "public_username",
@@ -275,7 +275,7 @@ def publish(config):
 def cleanup(config):
     return [{
         "name": "cleanup",
-        "image": "owncloudci/alpine",
+        "image": "docker.io/owncloudci/alpine",
         "failure": "ignore",
         "environment": {
             "DOCKER_USER": {
@@ -313,14 +313,14 @@ def lint(shell):
         "steps": [
             {
                 "name": "starlark-format",
-                "image": "owncloudci/bazel-buildifier",
+                "image": "docker.io/owncloudci/bazel-buildifier",
                 "commands": [
                     "buildifier --mode=check .drone.star",
                 ],
             },
             {
                 "name": "starlark-diff",
-                "image": "owncloudci/bazel-buildifier",
+                "image": "docker.io/owncloudci/bazel-buildifier",
                 "commands": [
                     "buildifier --mode=fix .drone.star",
                     "git diff",
@@ -349,7 +349,7 @@ def shellcheck(config):
     return [
         {
             "name": "shellcheck-%s" % (config["path"]),
-            "image": "koalaman/shellcheck-alpine:stable",
+            "image": "docker.io/koalaman/shellcheck-alpine:stable",
             "commands": [
                 "grep -ErlI '^#!(.*/|.*env +)(sh|bash|ksh)' %s/overlay/ | xargs -r shellcheck" % (config["path"]),
             ],
